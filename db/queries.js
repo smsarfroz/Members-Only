@@ -2,7 +2,7 @@ import pool from "./pool.js"
 
 async function addnewUser(firstname, lastname, email, password, membership_status) {
     const query = {
-        text : 'INSERT INTO users VALUES ($1), ($2), ($3), ($4), ($5)',
+        text : 'INSERT INTO users (firstname, lastname, email, password, membership_status) VALUES (($1), ($2), ($3), ($4), ($5))',
         values : [firstname, lastname, email, password, membership_status]
     }
     await pool.query(query);

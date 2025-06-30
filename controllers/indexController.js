@@ -1,6 +1,7 @@
 import asyncHandler from "express-async-handler";
 import db from "../db/queries.js";
 import { body, query, validationResult }  from "express-validator";
+import bcrypt from "bcryptjs";
 
 const validatenewUser = [
     body('firstname')
@@ -26,7 +27,9 @@ const validatenewUser = [
         .matches(/(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]/)
         .withMessage('password must contain atleast one letter and one number'),
     body('confirmpassword')
-        .custom(async (value, { req }) => {
+        .notEmpty()
+        .withMessage('Confirm Password must not be empty')
+        .custom((value, { req }) => {
             return value === req.body.password;
         })
         .withMessage('Please enter the same password')
@@ -36,13 +39,15 @@ const addnewUser = [validatenewUser, asyncHandler(async(req, res, next) => {
     try {
         const errors = validationResult(req);
         if(!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            return res.status(400).send({ errors: errors.array() });
         }
 
-        let { firstname, lastname, email, password, admin } = req.body;
+        const { firstname, lastname, email, password, admin } = req.body;
+        console.log(req.body);
+
         let exists = await db.userexistsbyemail(email);
         if (exists) {
-            throw new Error('user already exists');
+            res.status(400).send('user already exists');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);

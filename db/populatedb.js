@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS users (
     lastname VARCHAR ( 255 ),
     email VARCHAR ( 255 ),
     password VARCHAR ( 255 ),
-    membership_status BIT
+    membership_status VARCHAR (255)
 );
 CREATE TABLE IF NOT EXISTS messages (
     message_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
