@@ -9,19 +9,7 @@
 </head>
 
 <body>
-    <% if (locals.currentUser) {%>
-        <nav>
-            <a href="/">Welcome <%- currentUser.firstname %></a>
-            <a href="/newmessage">New Message</a>
-            <a href="/logout">Logout</a>
-        </nav>
-    <%} else {%>
-        <nav>
-            <a href="/">Welcome to AC Server!</a>
-            <a href="/sign-up">Sign Up</a>
-            <a href="/login">Login</a>
-        </nav>
-    <%}%>
+    <%- include('navbar') %>
     <div>
         <h2>Welcome to AC Server</h2>
         <p>A private place to discuss competitive programming </p>

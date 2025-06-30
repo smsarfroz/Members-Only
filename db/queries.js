@@ -16,7 +16,17 @@ async function userexistsbyemail(email) {
     const { rows } = await pool.query(query);
     return (rows.length > 0);
 }
+
+async function ismember(firstname) {
+    const query = {
+        text : 'SELECT membership_status FROM users WHERE firstname = $1',
+        values : [firstname]
+    }
+    const { rows } = await pool.query(query);
+    return (rows.length > 0);
+}
 export default {
     addnewUser,
     userexistsbyemail,
+    ismember,
 }

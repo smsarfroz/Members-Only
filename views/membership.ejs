@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/styles.css">
+    <title>Document</title>
+</head>
+<body>
+    <%- include('navbar') %>
+
+    <%if (locals.membership_status === 'true') {%>
+        
+        <p>Enjoy your stay as a member!</p>
+
+    <%} else {%>
+
+        <h2>Fill the form below and verify that you are atleast Candidate Master to gain access to the server</h2>
+
+        <form action="/membership" method="POST">
+            <div>
+                <label for="code">Enter the secret code</label>
+                <input type="number" id="code" name="code">
+            </div>
+
+            <button type="submit">Add me</button>
+        </form>
+    <%}%>
+
+    <%- include('footer') %>
+</body>
+</html>

@@ -7,6 +7,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import indexRouter from './routes/indexRouter.js';
 import pool from "./db/pool.js";
+import db from "./db/queries.js";
 
 const app = express();
 const currentDir = import.meta.dirname;
@@ -19,8 +20,13 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
   res.locals.currentUser = req.user;
+  
+  const ismember = await db.ismember(res.locals.currentUser);
+  if (ismember) {
+    res.locals.membership_status = true;
+  } 
   next();
 });
 
@@ -82,5 +88,7 @@ app.get("/logout", (req, res, next) => {
     res.redirect("/");
   });
 });
+
+app.get("/membership", (req, res) => res.render("membership"));
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

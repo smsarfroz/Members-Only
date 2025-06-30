@@ -1,5 +1,16 @@
-<nav>
-    <a href="/">Welcome to AC Server!</a>
-    <a href="/sign-up">Sign Up</a>
-    <a href="/login">Login</a>
-</nav>
+<% if (locals.currentUser) {%>
+    <nav>
+        <a href="/">Welcome <%- currentUser.firstname %></a>
+        <div>
+            <a href="/newmessage">New Message &nbsp;&nbsp;</a>
+            <a href="/membership">Membership</a>
+        </div>
+        <a href="/logout">Logout</a>
+    </nav>
+<%} else {%>
+    <nav>
+        <a href="/">Welcome to AC Server!</a>
+        <a href="/sign-up">Sign Up</a>
+        <a href="/login">Login</a>
+    </nav>
+<%}%>
