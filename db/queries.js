@@ -25,8 +25,21 @@ async function ismember(firstname) {
     const { rows } = await pool.query(query);
     return (rows.length > 0);
 }
+
+async function updatemembership(firstname) {
+    console.log(firstname);
+    const query = {
+        text: `UPDATE users
+               SET membership_status = $1
+               WHERE firstname = $2`,
+        values : ["on", firstname]
+    }
+
+    await pool.query(query);
+}
 export default {
     addnewUser,
     userexistsbyemail,
     ismember,
+    updatemembership
 }

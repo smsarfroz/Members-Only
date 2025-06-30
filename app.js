@@ -16,17 +16,27 @@ app.use(express.static(assetsPath));
 app.set("views", path.join(currentDir, "views"));
 app.set("view engine", "ejs");
 
-app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
+app.use(session({ 
+    secret: process.env.SESSION_SECRET, 
+    resave: false, 
+    saveUninitialized: false,
+    cookie: {
+        maxAge: 24 * 60 * 60 * 1000,
+        secure: false
+    }
+}));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(async (req, res, next) => {
   res.locals.currentUser = req.user;
   
-  const ismember = await db.ismember(res.locals.currentUser);
-  if (ismember) {
-    res.locals.membership_status = true;
-  } 
+  if (req.user) {
+    const ismember = await db.ismember(res.locals.currentUser);
+    if (ismember) {
+        res.locals.membership_status = true;
+    } 
+  }
   next();
 });
 
@@ -91,5 +101,19 @@ app.get("/logout", (req, res, next) => {
 
 app.get("/membership", (req, res) => res.render("membership"));
 app.get("/newmessage", (req, res) => res.render("newmessage"));
+
+app.post("/membership", async (req, res) => {
+    const { code } = req.body;
+    console.log(code, process.env.secret_code, code === process.env.secret_code);
+    const firstname = res.locals.currentUser.firstname;
+    if (code === process.env.secret_code) {
+        console.log(firstname);
+        await db.updatemembership(firstname);
+        console.log('you are now a member!');
+        res.redirect("/");
+    } else {
+        res.status(400).send('Incorrect code');
+    }
+});
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
