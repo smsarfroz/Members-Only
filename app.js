@@ -6,6 +6,7 @@ import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import bcrypt from "bcryptjs";
 import indexRouter from './routes/indexRouter.js';
+import pool from "./db/pool.js";
 
 const app = express();
 const currentDir = import.meta.dirname;
@@ -25,7 +26,7 @@ app.get("/login", (req, res) => res.render("login"));
 passport.use(
   new LocalStrategy(async (username, password, done) => {
     try {
-      const { rows } = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
+      const { rows } = await pool.query("SELECT * FROM users WHERE email = $1", [username]);
       const user = rows[0];
 
       if (!user) {
@@ -43,12 +44,12 @@ passport.use(
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  done(null, user.user_id);
 });
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [id]);
+    const { rows } = await pool.query("SELECT * FROM users WHERE user_id = $1", [id]);
     const user = rows[0];
 
     done(null, user);
@@ -59,7 +60,7 @@ passport.deserializeUser(async (id, done) => {
 
 
 app.post(
-  "/log-in",
+  "/login",
   passport.authenticate("local", {
     successRedirect: "/",
     failureRedirect: "/"
@@ -67,7 +68,7 @@ app.post(
 );
 
 
-app.get("/log-out", (req, res, next) => {
+app.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) {
       return next(err);
