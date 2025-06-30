@@ -20,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.get("/sign-up", (req, res) => res.render("sign-up"))
+app.get("/login", (req, res) => res.render("login"));
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
