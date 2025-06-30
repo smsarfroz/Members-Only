@@ -19,6 +19,11 @@ app.use(session({ secret: "cats", resave: false, saveUninitialized: false }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  res.locals.currentUser = req.user;
+  next();
+});
+
 app.use("/", indexRouter);
 app.get("/sign-up", (req, res) => res.render("sign-up"))
 app.get("/login", (req, res) => res.render("login"));
@@ -36,6 +41,7 @@ passport.use(
       if (!match) {
         return done(null, false, { message: "Incorrect password" });
       }
+      console.log('user successfully authenticated');
       return done(null, user);
     } catch(err) {
       return done(err);
