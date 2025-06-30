@@ -90,5 +90,6 @@ app.get("/logout", (req, res, next) => {
 });
 
 app.get("/membership", (req, res) => res.render("membership"));
+app.get("/newmessage", (req, res) => res.render("newmessage"));
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
