@@ -125,7 +125,7 @@ app.post("/newmessage", async(req, res) => {
     console.log(req.body, res.locals.currentUser);
     let { message } = req.body;
     message = message.replace(/\r?\n|\r/g, ""); 
-    const firstname = res.locals.currentUser;
+    const firstname = res.locals.currentUser.firstname;
     
     const now = new Date();
     const year = now.getFullYear();
@@ -137,8 +137,13 @@ app.post("/newmessage", async(req, res) => {
 
     const timestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
-    await db.addnewmessage(message, firstname, timestamp);
-    res.redirect("/newmessage");
+    try {
+      await db.addnewmessage(message, firstname, timestamp);
+    } catch (error) {
+      console.error(error);
+    }
+    res.redirect("/");
 });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));
+
