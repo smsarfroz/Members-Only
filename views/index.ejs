@@ -18,8 +18,8 @@
     <div class="messagesContainer">
         <%rows.map(row => {%>
             <div class="message">
-                <p><%=row.message%></p>
-                <div>
+                <p class="messageText"><%=row.message%></p>
+                <div class="detailsText">
                     <span>
                         by
                         <%if (locals.membership_status === true) {%>
