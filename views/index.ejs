@@ -14,6 +14,26 @@
         <h2>Welcome to AC Server</h2>
         <p>A private place to discuss competitive programming </p>
     </div>
+
+    <div class="messagesContainer">
+        <%rows.map(row => {%>
+            <div class="message">
+                <p><%=row.message%></p>
+                <div>
+                    <span>
+                        <%if (locals.membership_status === true) {%>
+                            <%=row.firstname%>
+                        <%} else {%>
+                            anonymous
+                        <%}%>
+                    </span>
+                    <span>
+                        <%=row.timestamp%>
+                    </span>
+                </div>
+            </div>
+        <%});%>
+    </div>
     <%- include('footer') %>
 </body>
 

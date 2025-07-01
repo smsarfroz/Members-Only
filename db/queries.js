@@ -39,20 +39,30 @@ async function updatemembership(firstname) {
 }
 
 async function addnewmessage(message, firstname, timestamp) {
+    console.log(message, firstname, timestamp);
     const query = {
         text : `INSERT INTO messages (message, firstname, timestamp)
-                VALUES ($1, $2, $3)`,
+                VALUES (($1), ($2), ($3))`,
         valuse : [message, firstname, timestamp]
     }
+    try {
 
-    await pool.query(query);
+        await pool.query(query);
+    } catch (error) {
+        console.error(error);
+    }
     console.log('message added to the db successfully');
 }
 
+async function getallmessages() {
+    const { rows } = await pool.query(`SELECT * FROM messages`);
+    return rows;
+}
 export default {
     addnewUser,
     userexistsbyemail,
     ismember,
     updatemembership,
-    addnewmessage
+    addnewmessage,
+    getallmessages
 }

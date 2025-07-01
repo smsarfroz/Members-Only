@@ -33,15 +33,15 @@ app.use(async (req, res, next) => {
   res.locals.currentUser = req.user;
   
   if (req.user) {
-    console.log(req.user);
+    // console.log(req.user);
     const ismember = await db.ismember(res.locals.currentUser.firstname);
-    console.log(ismember);
+    // console.log(ismember);
     if (ismember) {
         res.locals.membership_status = true;
     } 
-    console.log(res.locals.membership_status);
+    // console.log(res.locals.membership_status);
   }
-  console.log(res.locals);
+  // console.log(res.locals);
   next();
 });
 
@@ -127,6 +127,7 @@ app.post("/newmessage", async(req, res) => {
     message = message.replace(/\r?\n|\r/g, ""); 
     const firstname = res.locals.currentUser;
     
+    const now = new Date();
     const year = now.getFullYear();
     const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
     const day = now.getDate().toString().padStart(2, '0');
