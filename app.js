@@ -33,10 +33,13 @@ app.use(async (req, res, next) => {
   res.locals.currentUser = req.user;
   
   if (req.user) {
-    const ismember = await db.ismember(res.locals.currentUser);
+    console.log(req.user);
+    const ismember = await db.ismember(res.locals.currentUser.firstname);
+    console.log(ismember);
     if (ismember) {
         res.locals.membership_status = true;
     } 
+    console.log(res.locals.membership_status);
   }
   console.log(res.locals);
   next();
