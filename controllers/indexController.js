@@ -53,7 +53,7 @@ const addnewUser = [validatenewUser, asyncHandler(async(req, res, next) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         await db.addnewUser(firstname, lastname, email, hashedPassword, admin);
         console.log('user added to database');
-        res.redirect('/');
+        res.redirect('/login');
     } catch (error) {
         console.error(error);
         next(error);

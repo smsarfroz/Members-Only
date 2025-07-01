@@ -37,9 +37,22 @@ async function updatemembership(firstname) {
 
     await pool.query(query);
 }
+
+async function addnewmessage(message, firstname, timestamp) {
+    const query = {
+        text : `INSERT INTO messages (message, firstname, timestamp)
+                VALUES ($1, $2, $3)`,
+        valuse : [message, firstname, timestamp]
+    }
+
+    await pool.query(query);
+    console.log('message added to the db successfully');
+}
+
 export default {
     addnewUser,
     userexistsbyemail,
     ismember,
-    updatemembership
+    updatemembership,
+    addnewmessage
 }

@@ -23,7 +23,8 @@ app.use(session({
     cookie: {
         maxAge: 24 * 60 * 60 * 1000,
         secure: false
-    }
+    },
+    rolling: true
 }));
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
@@ -37,6 +38,7 @@ app.use(async (req, res, next) => {
         res.locals.membership_status = true;
     } 
   }
+  console.log(res.locals);
   next();
 });
 
@@ -114,6 +116,25 @@ app.post("/membership", async (req, res) => {
     } else {
         res.status(400).send('Incorrect code');
     }
+});
+
+app.post("/newmessage", async(req, res) => {
+    console.log(req.body, res.locals.currentUser);
+    let { message } = req.body;
+    message = message.replace(/\r?\n|\r/g, ""); 
+    const firstname = res.locals.currentUser;
+    
+    const year = now.getFullYear();
+    const month = (now.getMonth() + 1).toString().padStart(2, '0'); 
+    const day = now.getDate().toString().padStart(2, '0');
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const seconds = now.getSeconds().toString().padStart(2, '0');
+
+    const timestamp = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+    await db.addnewmessage(message, firstname, timestamp);
+    res.redirect("/newmessage");
 });
 
 app.listen(3000, () => console.log("app listening on port 3000!"));

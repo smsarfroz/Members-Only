@@ -15,9 +15,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS messages (
     message_id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     message VARCHAR ( 255 ),
-    userid VARCHAR ( 255 ),
-    date DATE,
-    time TIMESTAMP
+    firstname VARCHAR ( 255 ),
+    timestamp VARCHAR ( 255 )
 );
 `;
 
