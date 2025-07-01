@@ -10,7 +10,7 @@
 
 <body>
     <%- include('navbar') %>
-    <div>
+    <div class="welcome">
         <h2>Welcome to AC Server</h2>
         <p>A private place to discuss competitive programming </p>
     </div>
@@ -21,13 +21,17 @@
                 <p><%=row.message%></p>
                 <div>
                     <span>
+                        by
                         <%if (locals.membership_status === true) {%>
-                            <%=row.firstname%>
+                            
+                            <b><i><%=row.firstname%></i></b>
                         <%} else {%>
-                            anonymous
+                            
+                            <b><i>anonymous</i></b>
                         <%}%>
                     </span>
                     <span>
+                        on
                         <%=row.timestamp%>
                     </span>
                 </div>
