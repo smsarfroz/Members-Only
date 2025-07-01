@@ -41,7 +41,7 @@ async function updatemembership(firstname) {
 async function addnewmessage(message, firstname, timestamp) {
     console.log(message, firstname, timestamp);
     const query = {
-        text : `INSERT INTO messages (message, firstname, timestamp) VALUES ($1), ($2), ($3)`,
+        text : `INSERT INTO messages (message, firstname, timestamp) VALUES (($1), ($2), ($3))`,
         values : [message, firstname, timestamp]
     }
     try {
