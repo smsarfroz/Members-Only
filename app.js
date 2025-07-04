@@ -109,9 +109,9 @@ app.get("/newmessage", (req, res) => res.render("newmessage"));
 
 app.post("/membership", async (req, res) => {
     const { code } = req.body;
-    console.log(code, process.env.secret_code, code === process.env.secret_code);
+    console.log(code, process.env.SECRET_CODE, code === process.env.SECRET_CODE);
     const firstname = res.locals.currentUser.firstname;
-    if (code === process.env.secret_code) {
+    if (code === process.env.SECRET_CODE) {
         console.log(firstname);
         await db.updatemembership(firstname);
         console.log('you are now a member!');
