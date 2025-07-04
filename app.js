@@ -10,14 +10,22 @@ import pool from "./db/pool.js";
 import db from "./db/queries.js";
 
 const app = express();
-const currentDir = import.meta.dirname;
-const assetsPath = path.join(currentDir, "public");
+// const currentDir = import.meta.dirname;
+
+//standard ES modules approach:
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+const assetsPath = path.join(__dirname, "public");
 app.use(express.static(assetsPath));
-app.set("views", path.join(currentDir, "views"));
+app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.use(session({ 
-    secret: process.env.SESSION_SECRET, 
+    secret: process.env.SESSION_SECRET || "fallback-secret", 
     resave: false, 
     saveUninitialized: false,
     cookie: {
@@ -145,5 +153,6 @@ app.post("/newmessage", async(req, res) => {
     res.redirect("/");
 });
 
-app.listen(3000, () => console.log("app listening on port 3000!"));
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("app listening on port 3000!"));
 
